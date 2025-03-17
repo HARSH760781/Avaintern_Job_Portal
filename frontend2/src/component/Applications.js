@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
     margin: "auto",
     boxSizing: "border-box",
-    width: "60%",
+    width: "60vw ",
     borderRadius: "12px",
     backgroundColor: "#ffffff", // White background for cards
     transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
