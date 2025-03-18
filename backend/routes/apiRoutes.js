@@ -24,6 +24,7 @@ router.post("/jobs", jwtAuth, (req, res) => {
 
   const data = req.body;
 
+  console.log("Data-:", data);
   let job = new Job({
     userId: user._id,
     title: data.title,
@@ -36,6 +37,8 @@ router.post("/jobs", jwtAuth, (req, res) => {
     duration: data.duration,
     salary: data.salary,
     rating: data.rating,
+    companyName: data.companyName,
+    careerPageLink: data.careerPageLink,
   });
 
   job

@@ -31,6 +31,16 @@ import { SetPopupContext } from "../App";
 import apiList from "../../../frontend2/src/lib/apiList";
 import { userType } from "../lib/isAuth";
 
+import {
+  Work as WorkIcon,
+  AttachMoney as AttachMoneyIcon,
+  Schedule as ScheduleIcon,
+  Person as PersonIcon,
+  Event as EventIcon,
+  Business as BusinessIcon,
+  Code as CodeIcon,
+} from "@mui/icons-material";
+
 const useStyles = makeStyles((theme) => ({
   body: {
     height: "inherit",
@@ -102,6 +112,7 @@ const useStyles = makeStyles((theme) => ({
   filterButton: {
     marginTop: theme.spacing(2),
     fontWeight: "bold",
+    width: "50%",
     transition: "background-color 0.3s ease, transform 0.3s ease",
     "&:hover": {
       backgroundColor: theme.palette.primary.dark,
@@ -165,24 +176,38 @@ const JobTile = (props) => {
           <Typography variant="h5" gutterBottom style={{ fontWeight: "bold" }}>
             {job.title}
           </Typography>
+          <Typography
+            variant="h6"
+            gutterBottom
+            style={{ fontWeight: "500", fontStyle: "italic", color: "blue" }}
+          >
+            <BusinessIcon fontSize="small" style={{ marginRight: "8px" }} />
+            {job.companyName}
+          </Typography>
           <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
           <Typography variant="body1" color="textSecondary">
+            <WorkIcon fontSize="small" style={{ marginRight: "8px" }} />
             Role: {job.jobType}
           </Typography>
           <Typography variant="body1" color="textSecondary">
+            <AttachMoneyIcon fontSize="small" style={{ marginRight: "8px" }} />
             Salary: &#8377; {job.salary} per month
           </Typography>
           <Typography variant="body1" color="textSecondary">
+            <ScheduleIcon fontSize="small" style={{ marginRight: "8px" }} />
             Duration:{" "}
             {job.duration !== 0 ? `${job.duration} months` : "Flexible"}
           </Typography>
           <Typography variant="body1" color="textSecondary">
+            <PersonIcon fontSize="small" style={{ marginRight: "8px" }} />
             Posted By: {job.recruiter.name}
           </Typography>
           <Typography variant="body1" color="textSecondary">
+            <EventIcon fontSize="small" style={{ marginRight: "8px" }} />
             Deadline: {deadline}
           </Typography>
           <Box mt={1}>
+            <CodeIcon fontSize="small" style={{ marginRight: "8px" }} />
             {job.skillsets.map((skill, index) => (
               <Chip
                 key={index}
@@ -202,19 +227,37 @@ const JobTile = (props) => {
           display="flex"
           alignItems="center"
           justifyContent="center"
+          flexDirection="column"
+          gap={2}
         >
           <Button
             variant="contained"
             color="primary"
             className={classes.button}
-            onClick={() => setOpen(true)}
+            onClick={() => {
+              window.open(job.careerPageLink, "_blank");
+              setOpen(true);
+            }}
             disabled={userType() === "recruiter"}
             fullWidth
           >
             Apply
           </Button>
+          {/* {job.careerPageLink && (
+            <Button
+              variant="outlined"
+              color="secondary"
+              className={classes.button}
+              onClick={() => window.open(job.careerPageLink, "_blank")}
+              fullWidth
+            >
+              Visit Career Page
+            </Button>
+          )} */}
         </Grid>
       </Grid>
+
+      {/* </Grid>s */}
 
       {/* Modal for SOP */}
       <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
@@ -232,7 +275,7 @@ const JobTile = (props) => {
           }}
         >
           <TextField
-            label="Write SOP (up to 250 words)"
+            label="How do you fit for this role (up to 250 words)"
             multiline
             rows={8}
             style={{ width: "100%", marginBottom: "30px" }}
@@ -264,12 +307,29 @@ const FilterPopup = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const { open, handleClose, searchOptions, setSearchOptions, getData } = props;
-  const isMobile = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
     <Modal open={open} onClose={handleClose} className={classes.popupDialog}>
-      <Paper className={classes.filterPopup}>
-        <Grid container direction="column" alignItems="center" spacing={3}>
+      <Paper
+        className={classes.filterPopup}
+        style={{
+          maxHeight: "60vh", // Limit height to 90% of the viewport
+          overflow: "auto", // Make content scrollable
+          padding: theme.spacing(3),
+          width: isMobile ? "90%" : "50%", // Responsive width
+          margin: "auto", // Center the popup
+          // padding: "24px !important",
+        }}
+      >
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          spacing={3}
+          // style={{ width: "90% !important" }}
+        >
+          {/* Job Type Section */}
           <Grid container item alignItems="center">
             <Grid item xs={12} sm={3}>
               <Typography variant="body1">Job Type</Typography>
@@ -337,6 +397,8 @@ const FilterPopup = (props) => {
               </Grid>
             </Grid>
           </Grid>
+
+          {/* Salary Section */}
           <Grid container item alignItems="center">
             <Grid item xs={12} sm={3}>
               <Typography variant="body1">Salary</Typography>
@@ -359,6 +421,8 @@ const FilterPopup = (props) => {
               />
             </Grid>
           </Grid>
+
+          {/* Duration Section */}
           <Grid container item alignItems="center">
             <Grid item xs={12} sm={3}>
               <Typography variant="body1">Duration</Typography>
@@ -388,6 +452,8 @@ const FilterPopup = (props) => {
               </TextField>
             </Grid>
           </Grid>
+
+          {/* Sort Section */}
           <Grid container item alignItems="center">
             <Grid item xs={12} sm={3}>
               <Typography variant="body1">Sort</Typography>
@@ -455,17 +521,19 @@ const FilterPopup = (props) => {
               ))}
             </Grid>
           </Grid>
+
+          {/* Apply Button */}
           <Grid item>
             <Button
               variant="contained"
               color="primary"
-              style={{ padding: "10px 50px" }}
+              style={{ padding: "10px 50px", marginTop: theme.spacing(2) }}
               onClick={() => {
                 getData();
                 handleClose();
               }}
             >
-              Apply
+              Apply Filters
             </Button>
           </Grid>
         </Grid>

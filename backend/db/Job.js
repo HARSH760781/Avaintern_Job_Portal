@@ -10,6 +10,22 @@ let schema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    companyName: {
+      type: String,
+      required: true, // Make it required if every job must have a company name
+    },
+    careerPageLink: {
+      type: String,
+      validate: {
+        validator: function (value) {
+          // Simple URL validation (optional)
+          return /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(
+            value
+          );
+        },
+        msg: "Invalid URL for career page link",
+      },
+    },
     maxApplicants: {
       type: Number,
       validate: [

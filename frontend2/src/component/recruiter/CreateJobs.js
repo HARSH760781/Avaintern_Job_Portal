@@ -7,9 +7,23 @@ import {
   TextField,
   MenuItem,
   Chip,
+  InputAdornment,
 } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles"; // Import makeStyles
 import axios from "axios";
+import {
+  Title as TitleIcon,
+  Business as BusinessIcon,
+  Link as LinkIcon,
+  Code as CodeIcon,
+  Work as WorkIcon,
+  Schedule as ScheduleIcon,
+  AttachMoney as AttachMoneyIcon,
+  Event as EventIcon,
+  People as PeopleIcon,
+  Assignment as AssignmentIcon,
+} from "@mui/icons-material";
 
 import { SetPopupContext } from "../../App";
 import apiList from "../../../../frontend2/src/lib/apiList";
@@ -28,6 +42,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CreateJobs = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
   const setPopup = useContext(SetPopupContext);
 
   const [jobDetails, setJobDetails] = useState({
@@ -41,6 +56,8 @@ const CreateJobs = (props) => {
     jobType: "Full Time",
     duration: 0,
     salary: 0,
+    companyName: "", // New field
+    careerPageLink: "", // New field
   });
 
   const handleInput = (key, value) => {
@@ -75,6 +92,8 @@ const CreateJobs = (props) => {
           jobType: "Full Time",
           duration: 0,
           salary: 0,
+          companyName: "", // Reset company name
+          careerPageLink: "", // Reset career page link
         });
       })
       .catch((err) => {
@@ -111,7 +130,13 @@ const CreateJobs = (props) => {
         item
         direction="column"
         alignItems="center"
-        style={{ padding: "30px", minHeight: "93vh" }}
+        style={{
+          padding: "20px",
+          minHeight: "93vh",
+          [theme.breakpoints.down("sm")]: {
+            padding: "10px !important",
+          },
+        }}
       >
         <Grid item>
           <Typography variant="h2">Add Job</Typography>
@@ -126,6 +151,10 @@ const CreateJobs = (props) => {
                 flexDirection: "column",
                 justifyContent: "center",
                 alignItems: "center",
+                [theme.breakpoints.down("sm")]: {
+                  width: "100% !important", // Responsive width for small screens
+                  padding: "0", // Adjust padding for small screens
+                },
               }}
             >
               <Grid
@@ -143,6 +172,49 @@ const CreateJobs = (props) => {
                     }
                     variant="outlined"
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <TitleIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Company Name"
+                    value={jobDetails.companyName}
+                    onChange={(event) =>
+                      handleInput("companyName", event.target.value)
+                    }
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <BusinessIcon />
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Career Page Link"
+                    value={jobDetails.careerPageLink}
+                    onChange={(event) =>
+                      handleInput("careerPageLink", event.target.value)
+                    }
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <LinkIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item>
@@ -172,6 +244,13 @@ const CreateJobs = (props) => {
                       }
                     }}
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <CodeIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                   <div style={{ marginTop: "10px" }}>
                     {jobDetails.skillsets.map((skill, index) => (
@@ -194,6 +273,13 @@ const CreateJobs = (props) => {
                       handleInput("jobType", event.target.value);
                     }}
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <WorkIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   >
                     <MenuItem value="Full Time">Full Time</MenuItem>
                     <MenuItem value="Part Time">Part Time</MenuItem>
@@ -210,6 +296,13 @@ const CreateJobs = (props) => {
                       handleInput("duration", event.target.value);
                     }}
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <ScheduleIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   >
                     <MenuItem value={0}>Flexible</MenuItem>
                     <MenuItem value={1}>1 Month</MenuItem>
@@ -229,7 +322,14 @@ const CreateJobs = (props) => {
                     onChange={(event) => {
                       handleInput("salary", event.target.value);
                     }}
-                    InputProps={{ inputProps: { min: 0 } }}
+                    InputProps={{
+                      inputProps: { min: 0 },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AttachMoneyIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     fullWidth
                   />
                 </Grid>
@@ -246,6 +346,13 @@ const CreateJobs = (props) => {
                     }}
                     variant="outlined"
                     fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <EventIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                   />
                 </Grid>
                 <Grid item>
@@ -257,7 +364,14 @@ const CreateJobs = (props) => {
                     onChange={(event) => {
                       handleInput("maxApplicants", event.target.value);
                     }}
-                    InputProps={{ inputProps: { min: 1 } }}
+                    InputProps={{
+                      inputProps: { min: 1 },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <PeopleIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     fullWidth
                   />
                 </Grid>
@@ -270,7 +384,14 @@ const CreateJobs = (props) => {
                     onChange={(event) => {
                       handleInput("maxPositions", event.target.value);
                     }}
-                    InputProps={{ inputProps: { min: 1 } }}
+                    InputProps={{
+                      inputProps: { min: 1 },
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <AssignmentIcon />
+                        </InputAdornment>
+                      ),
+                    }}
                     fullWidth
                   />
                 </Grid>
