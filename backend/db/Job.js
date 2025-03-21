@@ -118,18 +118,14 @@ let schema = new mongoose.Schema(
         },
       ],
     },
-    salary: {
-      type: Number,
+    Location: {
+      type: [String], // Change here to an array of strings
       validate: [
         {
-          validator: Number.isInteger,
-          msg: "Salary should be an integer",
-        },
-        {
           validator: function (value) {
-            return value >= 0;
+            return Array.isArray(value) && value.length > 0; // Ensure it's an array and not empty
           },
-          msg: "Salary should be positive",
+          msg: "Location should be an array with at least one value",
         },
       ],
     },

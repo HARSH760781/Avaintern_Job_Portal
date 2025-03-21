@@ -23,6 +23,7 @@ import {
   Event as EventIcon,
   People as PeopleIcon,
   Assignment as AssignmentIcon,
+  LocationCity,
 } from "@mui/icons-material";
 
 import { SetPopupContext } from "../../App";
@@ -55,7 +56,7 @@ const CreateJobs = (props) => {
     skillsets: [],
     jobType: "Full Time",
     duration: 0,
-    salary: 0,
+    Location: [],
     companyName: "", // New field
     careerPageLink: "", // New field
   });
@@ -91,7 +92,7 @@ const CreateJobs = (props) => {
           skillsets: [],
           jobType: "Full Time",
           duration: 0,
-          salary: 0,
+          Location: [],
           companyName: "", // Reset company name
           careerPageLink: "", // Reset career page link
         });
@@ -120,6 +121,25 @@ const CreateJobs = (props) => {
     setJobDetails({
       ...jobDetails,
       skillsets,
+    });
+  };
+
+  const [locationInput, setLocationInput] = useState("");
+  const handleLocationAdd = () => {
+    if (locationInput && !jobDetails.Location.includes(locationInput)) {
+      setJobDetails({
+        ...jobDetails,
+        Location: [...jobDetails.Location, locationInput],
+      });
+      setLocationInput(""); // Clear the input field after adding
+    }
+  };
+
+  const handleLocationDelete = (location, index) => {
+    const locations = jobDetails.Location.filter((_, i) => i !== index);
+    setJobDetails({
+      ...jobDetails,
+      Location: locations,
     });
   };
 
@@ -315,23 +335,35 @@ const CreateJobs = (props) => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    label="Salary"
-                    type="number"
+                    label="Location"
+                    type="text"
                     variant="outlined"
-                    value={jobDetails.salary}
-                    onChange={(event) => {
-                      handleInput("salary", event.target.value);
+                    value={locationInput}
+                    onChange={(event) => setLocationInput(event.target.value)}
+                    onKeyPress={(event) => {
+                      if (event.key === "Enter") {
+                        handleLocationAdd();
+                      }
                     }}
+                    fullWidth
                     InputProps={{
-                      inputProps: { min: 0 },
                       startAdornment: (
                         <InputAdornment position="start">
-                          <AttachMoneyIcon />
+                          <LocationCity />
                         </InputAdornment>
                       ),
                     }}
-                    fullWidth
                   />
+                  <div style={{ marginTop: "10px" }}>
+                    {jobDetails.Location.map((location, index) => (
+                      <Chip
+                        key={index}
+                        label={location}
+                        onDelete={() => handleLocationDelete(location, index)}
+                        style={{ margin: "4px" }}
+                      />
+                    ))}
+                  </div>
                 </Grid>
                 <Grid item>
                   <TextField

@@ -35,7 +35,7 @@ router.post("/jobs", jwtAuth, (req, res) => {
     skillsets: data.skillsets,
     jobType: data.jobType,
     duration: data.duration,
-    salary: data.salary,
+    Location: data.Location,
     rating: data.rating,
     companyName: data.companyName,
     careerPageLink: data.careerPageLink,
@@ -269,6 +269,9 @@ router.put("/jobs/:id", jwtAuth, (req, res) => {
       }
       if (data.deadline) {
         job.deadline = data.deadline;
+      }
+      if (data.Location) {
+        job.Location = data.Location; // Update the Location field
       }
       job
         .save()

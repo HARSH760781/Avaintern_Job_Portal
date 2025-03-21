@@ -39,6 +39,7 @@ import {
   Event as EventIcon,
   Business as BusinessIcon,
   Code as CodeIcon,
+  LocationCity,
 } from "@mui/icons-material";
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +59,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   jobTileOuter: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     margin: theme.spacing(2, 0),
     boxSizing: "border-box",
     width: "100%",
@@ -77,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   filterPopup: {
-    padding: theme.spacing(3),
+    padding: theme.spacing(2),
     outline: "none",
     minWidth: "50%",
     backgroundColor: "#ffffff",
@@ -179,9 +180,9 @@ const JobTile = (props) => {
           <Typography
             variant="h6"
             gutterBottom
-            style={{ fontWeight: "500", fontStyle: "italic", color: "blue" }}
+            style={{ fontWeight: "500", fontStyle: "normal", color: "blue" }}
           >
-            <BusinessIcon fontSize="small" style={{ marginRight: "8px" }} />
+            <BusinessIcon fontSize="xs" style={{ marginRight: "8px" }} />
             {job.companyName}
           </Typography>
           <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
@@ -190,8 +191,8 @@ const JobTile = (props) => {
             Role: {job.jobType}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            <AttachMoneyIcon fontSize="small" style={{ marginRight: "8px" }} />
-            Salary: &#8377; {job.salary} per month
+            <LocationCity fontSize="small" style={{ marginRight: "8px" }} />
+            Location: {job.Location}
           </Typography>
           <Typography variant="body1" color="textSecondary">
             <ScheduleIcon fontSize="small" style={{ marginRight: "8px" }} />
@@ -398,10 +399,10 @@ const FilterPopup = (props) => {
             </Grid>
           </Grid>
 
-          {/* Salary Section */}
+          {/* Location Section */}
           <Grid container item alignItems="center">
             <Grid item xs={12} sm={3}>
-              <Typography variant="body1">Salary</Typography>
+              <Typography variant="body1">Location</Typography>
             </Grid>
             <Grid item xs={12} sm={9}>
               <Slider
@@ -411,11 +412,11 @@ const FilterPopup = (props) => {
                   { value: 0, label: "0" },
                   { value: 100, label: "100000" },
                 ]}
-                value={searchOptions.salary}
+                value={searchOptions.Location}
                 onChange={(event, value) =>
                   setSearchOptions({
                     ...searchOptions,
-                    salary: value,
+                    Location: value,
                   })
                 }
               />
@@ -459,7 +460,7 @@ const FilterPopup = (props) => {
               <Typography variant="body1">Sort</Typography>
             </Grid>
             <Grid container item xs={12} sm={9} spacing={2}>
-              {["salary", "duration", "rating"].map((field) => (
+              {["Location", "duration", "rating"].map((field) => (
                 <Grid item xs={12} sm={4} key={field}>
                   <Paper
                     style={{
@@ -554,10 +555,10 @@ const Home = (props) => {
       partTime: false,
       wfh: false,
     },
-    salary: [0, 100],
+    Location: [0, 100],
     duration: "0",
     sort: {
-      salary: {
+      Location: {
         status: false,
         desc: false,
       },
@@ -595,16 +596,16 @@ const Home = (props) => {
     if (searchOptions.jobType.wfh) {
       searchParams = [...searchParams, `jobType=Work%20From%20Home`];
     }
-    if (searchOptions.salary[0] !== 0) {
+    if (searchOptions.Location[0] !== 0) {
       searchParams = [
         ...searchParams,
-        `salaryMin=${searchOptions.salary[0] * 1000}`,
+        `LocationMin=${searchOptions.Location[0] * 1000}`,
       ];
     }
-    if (searchOptions.salary[1] !== 100) {
+    if (searchOptions.Location[1] !== 100) {
       searchParams = [
         ...searchParams,
-        `salaryMax=${searchOptions.salary[1] * 1000}`,
+        `LocationMax=${searchOptions.Location[1] * 1000}`,
       ];
     }
     if (searchOptions.duration !== "0") {

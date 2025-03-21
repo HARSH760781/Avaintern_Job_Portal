@@ -154,7 +154,7 @@ const JobTile = (props) => {
               <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
             </Grid>
             <Grid item>Role : {job.jobType}</Grid>
-            <Grid item>Salary : &#8377; {job.salary} per month</Grid>
+            <Grid item>Location : &#8377; {job.Location} per month</Grid>
             <Grid item>
               Duration :{" "}
               {job.duration !== 0 ? `${job.duration} month` : `Flexible`}
@@ -455,18 +455,18 @@ const FilterPopup = (props) => {
             </Grid>
           </Grid>
 
-          {/* Salary Section */}
+          {/* Location Section */}
           <Grid container item alignItems="center" spacing={2}>
             <Grid item xs={12} sm={3}>
-              <Typography>Salary</Typography>
+              <Typography>Location</Typography>
             </Grid>
             <Grid item xs={12} sm={9}>
               <Slider
-                value={searchOptions.salary}
+                value={searchOptions.Location}
                 onChange={(event, value) =>
                   setSearchOptions({
                     ...searchOptions,
-                    salary: value,
+                    Location: value,
                   })
                 }
                 valueLabelDisplay="auto"
@@ -517,7 +517,7 @@ const FilterPopup = (props) => {
               <Typography>Sort</Typography>
             </Grid>
             <Grid container item xs={12} sm={9} spacing={2}>
-              {["salary", "duration", "rating"].map((field) => (
+              {["Location", "duration", "rating"].map((field) => (
                 <Grid item xs={12} sm={4} key={field}>
                   <Paper
                     style={{
@@ -603,10 +603,10 @@ const MyJobs = (props) => {
       partTime: false,
       wfh: false,
     },
-    salary: [0, 100],
+    Location: [0, 100],
     duration: "0",
     sort: {
-      salary: {
+      Location: {
         status: false,
         desc: false,
       },
@@ -640,16 +640,16 @@ const MyJobs = (props) => {
     if (searchOptions.jobType.wfh) {
       searchParams = [...searchParams, `jobType=Work%20From%20Home`];
     }
-    if (searchOptions.salary[0] != 0) {
+    if (searchOptions.Location[0] != 0) {
       searchParams = [
         ...searchParams,
-        `salaryMin=${searchOptions.salary[0] * 1000}`,
+        `LocationMin=${searchOptions.Location[0] * 1000}`,
       ];
     }
-    if (searchOptions.salary[1] != 100) {
+    if (searchOptions.Location[1] != 100) {
       searchParams = [
         ...searchParams,
-        `salaryMax=${searchOptions.salary[1] * 1000}`,
+        `LocationMax=${searchOptions.Location[1] * 1000}`,
       ];
     }
     if (searchOptions.duration != "0") {
