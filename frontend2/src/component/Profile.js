@@ -576,8 +576,15 @@ const Profile = (props) => {
                     gap: theme.spacing(2),
                   }}
                 >
+                  console.log(
+                  {`${process.env.REACT_APP_SERVER}${
+                    profileDetails.profile
+                  }?${new Date().getTime()}`}
+                  );
                   <Avatar
-                    src={`${process.env.REACT_APP_SERVER}${profileDetails.profile}`}
+                    src={`${process.env.REACT_APP_SERVER}${
+                      profileDetails.profile
+                    }?${new Date().getTime()}`} // Add a timestamp to force re-render
                     alt="Profile"
                     className={classes.previewImage}
                     style={{

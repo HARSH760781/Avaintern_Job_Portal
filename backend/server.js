@@ -53,6 +53,7 @@ app.use(passportConfig.initialize());
 app.use(passport.initialize());
 
 app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routing
 
