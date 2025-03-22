@@ -52,10 +52,6 @@ router.post(
         });
       }
 
-      // Hash the password
-      // const saltRounds = 10;
-      // const hashedPassword = await bcrypt.hash(password, saltRounds);
-      // console.log("hashed:", hashedPassword);
       // Create a new user
       const user = new User({
         email,
@@ -149,6 +145,7 @@ router.post("/login", (req, res, next) => {
         name: user.name,
         email: user.email,
       });
+      // console.log(res.json);
     }
   )(req, res, next);
 });

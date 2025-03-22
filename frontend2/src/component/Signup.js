@@ -416,6 +416,7 @@ const Signup = (props) => {
         .then((response) => {
           localStorage.setItem("token", response.data.token); // Store token in localStorage
           localStorage.setItem("type", response.data.type); // Optionally store type
+          localStorage.setItem("userId", response.data.userId); // Optionally store type
           setLoggedin(true); // Update the loggedin state
           setPopup({
             open: true,

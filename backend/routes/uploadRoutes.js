@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const JobApplicantInfo = require("../db/JobApplicant"); // Import the model
+const jwtAuth = require("../lib/jwtAuth");
 
 const router = express.Router();
 
@@ -85,8 +86,20 @@ router.put(
   upload.fields([{ name: "profile" }, { name: "resume" }]),
   async (req, res) => {
     try {
+      // console.log("Request Received at /user"); // Debugging log
+      // console.log("Request Headers:", req.headers); // Debugging log
+      // console.log("Request Files:", req.files); // Debugging log
+      // console.log("Request Body:", req.body); // Debugging log
+
       const userId = req.body.userId;
+      if (!userId) {
+        console.error("User ID is missing"); // Debugging log
+        return res.status(400).json({ message: "User ID is required" });
+      }
+
       const profileDetails = JSON.parse(req.body.profileDetails);
+      // console.log("USER:", userId);
+      // console.log("PROFILE:", profileDetails);
 
       // Update profile details in the database
       const updateData = { ...profileDetails };

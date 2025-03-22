@@ -7,6 +7,7 @@ const passportConfig = require("./lib/passportConfig");
 const cors = require("cors");
 const fs = require("fs");
 const { router: uploadRoutes } = require("./routes/uploadRoutes");
+const userRoutes = require("./routes/apiRoutes");
 require("dotenv").config();
 
 // MongoDB
@@ -62,7 +63,7 @@ app.use(express.static(path.join(__dirname, "build")));
 // Routing
 
 app.use("/auth", require("./routes/authRoutes"));
-app.use("/api", require("./routes/apiRoutes"));
+app.use("/api", userRoutes);
 app.use("/upload", uploadRoutes);
 app.use("/host", require("./routes/downloadRoutes"));
 

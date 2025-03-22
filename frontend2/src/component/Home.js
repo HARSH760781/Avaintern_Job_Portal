@@ -84,7 +84,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: "#ffffff",
     borderRadius: "12px",
     [theme.breakpoints.down("sm")]: {
-      minWidth: "90%",
+      minWidth: "90vw",
     },
   },
   searchBar: {
@@ -400,9 +400,16 @@ const FilterPopup = (props) => {
           </Grid>
 
           {/* Location Section */}
-          <Grid container item alignItems="center">
+          <Grid
+            container
+            item
+            alignItems="center"
+            maxWidth="85vw !important"
+            // backgroundColor="red"
+            padding="10px"
+          >
             <Grid item xs={12} sm={3}>
-              <Typography variant="body1">Location</Typography>
+              <Typography variant="body1">Salary</Typography>
             </Grid>
             <Grid item xs={12} sm={9}>
               <Slider

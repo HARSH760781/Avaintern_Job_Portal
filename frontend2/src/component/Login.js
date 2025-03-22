@@ -82,15 +82,18 @@ const Login = (props) => {
       axios
         .post(apiList.login, loginDetails)
         .then((response) => {
+          // console.log(response);
           localStorage.setItem("token", response.data.token);
           localStorage.setItem("type", response.data.type);
+          localStorage.setItem("userId", response.data.userId);
+          // console.log("userId", response.data.userId);
           setLoggedin(isAuth());
           setPopup({
             open: true,
             severity: "success",
             message: "Logged in successfully",
           });
-          console.log(response);
+          console.log("DAta", response);
         })
         .catch((err) => {
           setPopup({

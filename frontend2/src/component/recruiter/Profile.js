@@ -39,7 +39,7 @@ const Profile = (props) => {
     contactNumber: "",
   });
 
-  console.log("Pro:", props);
+  // console.log("Pro:", props);
   const [phone, setPhone] = useState("");
 
   const handleInput = (key, value) => {
@@ -61,7 +61,7 @@ const Profile = (props) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setProfileDetails(response.data);
         setPhone(response.data.contactNumber);
       })
@@ -82,7 +82,7 @@ const Profile = (props) => {
     if (phone !== "") {
       updatedDetails = {
         ...profileDetails,
-        contactNumber: `+91 ${phone}`,
+        contactNumber: `${phone}`,
       };
     } else {
       updatedDetails = {

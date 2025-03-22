@@ -275,8 +275,8 @@ const Profile = (props) => {
   };
 
   const handleUpdate = () => {
+    // console.log("Sending request to:", apiList.user); // Add this line
     const userId = localStorage.getItem("userId");
-    console.log("USER", userId);
     const formData = new FormData();
 
     // Append profile details
@@ -307,7 +307,11 @@ const Profile = (props) => {
 
     formData.append("userId", userId);
 
-    console.log(formData);
+    // Debugging: Log FormData contents
+    // for (let [key, value] of formData.entries()) {
+    //   console.log(key, value);
+    // }
+
     // Send the request
     axios
       .put(apiList.user, formData, {
@@ -317,11 +321,11 @@ const Profile = (props) => {
         },
       })
       .then((response) => {
-        // Update profileDetails with the new URLs returned from the server
+        // console.log("Response:", response.data); // Add this line
         setProfileDetails((prevDetails) => ({
           ...prevDetails,
-          profile: response.data.profile || prevDetails.profile, // Use new profile URL if available
-          resume: response.data.resume || prevDetails.resume, // Use new resume URL if available
+          profile: response.data.profile || prevDetails.profile,
+          resume: response.data.resume || prevDetails.resume,
         }));
         setPopup({
           open: true,
@@ -331,13 +335,13 @@ const Profile = (props) => {
         getData(); // Refresh profile data
       })
       .catch((err) => {
+        console.error("Error:", err); // Add this line
         setPopup({
           open: true,
           severity: "error",
           message: err.response.data.message,
         });
       });
-    // console.log(formData.profileDetails);
   };
 
   if (loading) {
@@ -543,7 +547,7 @@ const Profile = (props) => {
         </Button>
 
         {/* Profile and Resume Upload Fields */}
-        {/* <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
+        <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">Profile Picture</Typography>
             <input
@@ -560,7 +564,7 @@ const Profile = (props) => {
               onChange={(e) => setResumeFile(e.target.files[0])}
             />
           </Grid>
-        </Grid> */}
+        </Grid>
 
         {/* Preview Section */}
         <Typography
