@@ -40,6 +40,8 @@ app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 app.use("/resume", express.static(path.join(__dirname, "public/resume")));
 app.use("/profile", express.static(path.join(__dirname, "public/profile")));
+app.use(express.static(path.join(__dirname, "public")));
+
 // Setting up middlewares
 app.use(
   cors({
@@ -54,7 +56,7 @@ app.use(passportConfig.initialize());
 app.use(passport.initialize());
 
 app.use(express.static(path.join(__dirname, "build")));
-app.use(express.static(path.join(__dirname, "public")));
+
 
 
 // Routing
