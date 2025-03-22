@@ -154,7 +154,7 @@ const JobTile = (props) => {
               <Rating value={job.rating !== -1 ? job.rating : null} readOnly />
             </Grid>
             <Grid item>Role : {job.jobType}</Grid>
-            <Grid item>Location : &#8377; {job.Location} per month</Grid>
+            <Grid item>Location : {job.Location} </Grid>
             <Grid item>
               Duration :{" "}
               {job.duration !== 0 ? `${job.duration} month` : `Flexible`}

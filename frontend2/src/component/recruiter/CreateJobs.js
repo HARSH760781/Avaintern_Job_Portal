@@ -8,6 +8,7 @@ import {
   MenuItem,
   Chip,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { makeStyles } from "@mui/styles"; // Import makeStyles
@@ -45,6 +46,7 @@ const CreateJobs = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const setPopup = useContext(SetPopupContext);
+  const [loading, setLoading] = useState(false); // Loader state
 
   const [jobDetails, setJobDetails] = useState({
     title: "",
@@ -70,6 +72,7 @@ const CreateJobs = (props) => {
 
   const handleUpdate = () => {
     console.log(jobDetails);
+    setLoading(true);
     axios
       .post(apiList.jobs, jobDetails, {
         headers: {
@@ -104,6 +107,9 @@ const CreateJobs = (props) => {
           message: err.response.data.message,
         });
         console.log(err.response);
+      })
+      .finally(() => {
+        setLoading(false); // Stop loader
       });
   };
 
@@ -239,7 +245,7 @@ const CreateJobs = (props) => {
                 </Grid>
                 <Grid item>
                   <TextField
-                    label="Skills"
+                    label="Skills & Requirement"
                     variant="outlined"
                     helperText="Press enter to add skills"
                     value={skillInput} // Controlled input value
@@ -431,10 +437,10 @@ const CreateJobs = (props) => {
               <Button
                 variant="contained"
                 color="primary"
-                style={{ padding: "10px 50px", marginTop: "30px" }}
-                onClick={() => handleUpdate()}
+                onClick={handleUpdate}
+                disabled={loading}
               >
-                Create Job
+                {loading ? <CircularProgress size={24} /> : "Add Job"}
               </Button>
             </Paper>
           </Grid>

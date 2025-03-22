@@ -181,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if screen size is below 600px
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const setPopup = useContext(SetPopupContext);
   const [profileDetails, setProfileDetails] = useState({
     name: "",
@@ -198,6 +198,8 @@ const Profile = (props) => {
     },
   ]);
   const [loading, setLoading] = useState(true);
+  const [profileImage, setProfileImage] = useState(null); // Store selected profile image file
+  const [resumeFile, setResumeFile] = useState(null); // Store selected resume file
 
   const handleInput = (key, value) => {
     setProfileDetails({
@@ -242,31 +244,56 @@ const Profile = (props) => {
   };
 
   const handleUpdate = () => {
-    let updatedDetails = {
-      ...profileDetails,
-      education: education
-        .filter((obj) => obj.institutionName.trim() !== "")
-        .map((obj) => {
-          if (obj["endYear"] === "") {
-            delete obj["endYear"];
-          }
-          return obj;
-        }),
-    };
+    // Create a FormData object to send both profile details and files
+    const formData = new FormData();
 
+    // Append profile details
+    formData.append(
+      "profileDetails",
+      JSON.stringify({
+        ...profileDetails,
+        education: education
+          .filter((obj) => obj.institutionName.trim() !== "")
+          .map((obj) => {
+            if (obj["endYear"] === "") {
+              delete obj["endYear"];
+            }
+            return obj;
+          }),
+      })
+    );
+
+    // Append profile image if selected
+    if (profileImage) {
+      formData.append("profile", profileImage);
+    }
+
+    // Append resume file if selected
+    if (resumeFile) {
+      formData.append("resume", resumeFile);
+    }
+
+    // Send the request
     axios
-      .put(apiList.user, updatedDetails, {
+      .put(apiList.user, formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
+        // Update profileDetails with the new URLs returned from the server
+        setProfileDetails((prevDetails) => ({
+          ...prevDetails,
+          profile: response.data.profile || prevDetails.profile, // Use new profile URL if available
+          resume: response.data.resume || prevDetails.resume, // Use new resume URL if available
+        }));
         setPopup({
           open: true,
           severity: "success",
           message: response.data.message,
         });
-        getData();
+        getData(); // Refresh profile data
       })
       .catch((err) => {
         setPopup({
@@ -478,6 +505,26 @@ const Profile = (props) => {
         >
           Add Education
         </Button>
+
+        {/* Profile and Resume Upload Fields */}
+        <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1">Profile Picture</Typography>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setProfileImage(e.target.files[0])}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="body1">Resume</Typography>
+            <input
+              type="file"
+              accept=".pdf"
+              onChange={(e) => setResumeFile(e.target.files[0])}
+            />
+          </Grid>
+        </Grid>
 
         {/* Preview Section */}
         <Typography

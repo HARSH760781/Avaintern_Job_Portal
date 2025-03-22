@@ -1,5 +1,12 @@
 import { useContext, useState } from "react";
-import { Grid, TextField, Button, Typography, Paper } from "@mui/material";
+import {
+  Grid,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  CircularProgress,
+} from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import axios from "axios";
 import { Navigate } from "react-router-dom";
@@ -31,6 +38,7 @@ const Login = (props) => {
   const setPopup = useContext(SetPopupContext);
 
   const [loggedin, setLoggedin] = useState(isAuth());
+  const [loading, setLoading] = useState(false);
 
   const [loginDetails, setLoginDetails] = useState({
     email: "",
@@ -70,6 +78,7 @@ const Login = (props) => {
       return inputErrorHandler[obj].error;
     });
     if (verified) {
+      setLoading(true); // Start loader
       axios
         .post(apiList.login, loginDetails)
         .then((response) => {
@@ -90,6 +99,9 @@ const Login = (props) => {
             message: err.response.data.message,
           });
           console.log(err.response);
+        })
+        .finally(() => {
+          setLoading(false); // Hide loader
         });
     } else {
       setPopup({
@@ -132,10 +144,11 @@ const Login = (props) => {
           <Button
             variant="contained"
             color="primary"
-            onClick={() => handleLogin()}
+            onClick={handleLogin}
             className={classes.submitButton}
+            disabled={loading} // Disable button when loading
           >
-            Login
+            {loading ? <CircularProgress size={24} color="black" /> : "Login"}
           </Button>
         </Grid>
       </Grid>

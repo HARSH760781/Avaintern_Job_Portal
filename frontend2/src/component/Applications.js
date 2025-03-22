@@ -209,7 +209,7 @@ const ApplicationTile = (props) => {
             Role: {application.job.jobType}
           </Typography>
           <Typography variant="body1" color="textSecondary">
-            Salary: &#8377; {application.job.salary} per month
+            Location: {application.job.Location}
           </Typography>
           <Typography variant="body1" color="textSecondary">
             Duration:{" "}

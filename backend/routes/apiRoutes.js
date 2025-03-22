@@ -471,6 +471,7 @@ router.put("/user", jwtAuth, (req, res) => {
           });
       })
       .catch((err) => {
+        // console.log()
         res.status(400).json(err);
       });
   }
