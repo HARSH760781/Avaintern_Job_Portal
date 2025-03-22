@@ -20,6 +20,8 @@ import { SetPopupContext } from "../App";
 import { useTheme } from "@mui/material/styles";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FaceIcon from "@mui/icons-material/Face";
+// import { AccountCircle } from "@mui/icons-material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 // import jwtDecode from "jwt-decode";
 
 const useStyles = makeStyles((theme) => ({
@@ -327,6 +329,9 @@ const Profile = (props) => {
           profile: response.data.profile || prevDetails.profile,
           resume: response.data.resume || prevDetails.resume,
         }));
+
+        setProfileImage(null);
+
         setPopup({
           open: true,
           severity: "success",
@@ -548,24 +553,162 @@ const Profile = (props) => {
 
         {/* Profile and Resume Upload Fields */}
         <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
+          {/* Profile Picture Upload */}
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Profile Picture</Typography>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setProfileImage(e.target.files[0])}
-            />
+            <Paper
+              elevation={3}
+              style={{
+                padding: theme.spacing(3),
+                borderRadius: "12px",
+                backgroundColor: "#fafafa",
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                style={{ fontWeight: 600, color: "#333" }}
+              >
+                Profile Picture
+              </Typography>
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                gap={theme.spacing(2)}
+              >
+                <Avatar
+                  src={
+                    profileImage
+                      ? URL.createObjectURL(profileImage) // Use the newly selected image
+                      : AccountCircleIcon
+                  }
+                  alt="Profile Preview"
+                  style={{
+                    width: "120px",
+                    height: "120px",
+                    border: "4px solid #f5f5f5",
+                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.15)",
+                  }}
+                >
+                  {!profileImage && !profileDetails.profile && (
+                    <AccountCircleIcon
+                      style={{ fontSize: "60px", color: "#757575" }} // Fallback icon
+                    />
+                  )}
+                </Avatar>
+                <input
+                  accept="image/*"
+                  id="profile-upload"
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => setProfileImage(e.target.files[0])}
+                />
+                <label htmlFor="profile-upload">
+                  <Button
+                    variant="contained"
+                    component="span"
+                    style={{
+                      backgroundColor: "#1976d2",
+                      color: "#fff",
+                      padding: "10px 24px",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      borderRadius: "8px",
+                      "&:hover": {
+                        backgroundColor: "#1565c0",
+                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                      },
+                    }}
+                  >
+                    Choose Profile Image
+                  </Button>
+                </label>
+                {profileImage && (
+                  <Typography variant="body2" style={{ color: "#4caf50" }}>
+                    New image selected: {profileImage.name}
+                  </Typography>
+                )}
+              </Box>
+            </Paper>
           </Grid>
+
+          {/* Resume Upload */}
           <Grid item xs={12} sm={6}>
-            <Typography variant="body1">Resume</Typography>
-            <input
-              type="file"
-              accept=".pdf"
-              onChange={(e) => setResumeFile(e.target.files[0])}
-            />
+            <Paper
+              elevation={3}
+              style={{
+                padding: theme.spacing(3),
+                borderRadius: "12px",
+                backgroundColor: "#fafafa",
+                transition:
+                  "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: "0px 8px 24px rgba(0, 0, 0, 0.2)",
+                },
+              }}
+            >
+              <Typography
+                variant="h6"
+                gutterBottom
+                style={{ fontWeight: 600, color: "#333" }}
+              >
+                Resume Upload
+              </Typography>
+              <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                gap={theme.spacing(2)}
+              >
+                <DescriptionIcon
+                  style={{
+                    fontSize: "64px",
+                    color: "#1976d2",
+                  }}
+                />
+                <input
+                  accept=".pdf"
+                  id="resume-upload"
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => setResumeFile(e.target.files[0])}
+                />
+                <label htmlFor="resume-upload">
+                  <Button
+                    variant="contained"
+                    component="span"
+                    style={{
+                      backgroundColor: "#1976d2",
+                      color: "#fff",
+                      padding: "10px 24px",
+                      fontSize: "14px",
+                      fontWeight: "bold",
+                      borderRadius: "8px",
+                      "&:hover": {
+                        backgroundColor: "#1565c0",
+                        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.2)",
+                      },
+                    }}
+                  >
+                    Choose Resume
+                  </Button>
+                </label>
+                {resumeFile && (
+                  <Typography variant="body2" style={{ color: "#4caf50" }}>
+                    New resume selected: {resumeFile.name}
+                  </Typography>
+                )}
+              </Box>
+            </Paper>
           </Grid>
         </Grid>
-
         {/* Preview Section */}
         <Typography
           variant="h5"
