@@ -54,6 +54,8 @@ app.use(passport.initialize());
 
 app.use(express.static(path.join(__dirname, "build")));
 app.use(express.static(path.join(__dirname, "public")));
+app.use("/resume", express.static(path.join(__dirname, "public/resume")));
+app.use("/profile", express.static(path.join(__dirname, "public/profile")));
 
 // Routing
 

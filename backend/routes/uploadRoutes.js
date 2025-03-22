@@ -30,7 +30,13 @@ const upload = multer({ storage });
 // Upload resume
 router.post("/resume", upload.single("resume"), async (req, res) => {
   try {
-    const userId = req.body.userId; // Assuming userId is sent in the request body
+    const userId = req.body.userId;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
     const filePath = `/resume/${req.file.filename}`; // Get the file path
 
     // Update the JobApplicantInfo document with the resume file path
@@ -50,7 +56,13 @@ router.post("/resume", upload.single("resume"), async (req, res) => {
 // Upload profile image
 router.post("/profile", upload.single("profile"), async (req, res) => {
   try {
-    const userId = req.body.userId; // Assuming userId is sent in the request body
+    const userId = req.body.userId;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+    if (!req.file) {
+      return res.status(400).json({ message: "No file uploaded" });
+    }
     const filePath = `/profile/${req.file.filename}`; // Get the file path
 
     // Update the JobApplicantInfo document with the profile file path
@@ -68,6 +80,38 @@ router.post("/profile", upload.single("profile"), async (req, res) => {
     res.status(500).json({ message: "Error uploading profile image", error });
   }
 });
+router.put(
+  "/user",
+  upload.fields([{ name: "profile" }, { name: "resume" }]),
+  async (req, res) => {
+    try {
+      const userId = req.body.userId;
+      const profileDetails = JSON.parse(req.body.profileDetails);
+
+      // Update profile details in the database
+      const updateData = { ...profileDetails };
+
+      if (req.files.profile) {
+        updateData.profile = `/profile/${req.files.profile[0].filename}`;
+      }
+      if (req.files.resume) {
+        updateData.resume = `/resume/${req.files.resume[0].filename}`;
+      }
+
+      await JobApplicantInfo.findOneAndUpdate({ userId }, updateData, {
+        new: true,
+        upsert: true,
+      });
+
+      res
+        .status(200)
+        .json({ message: "Profile updated successfully", data: updateData });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      res.status(500).json({ message: "Error updating profile", error });
+    }
+  }
+);
 
 // Export both upload and router
 module.exports = {

@@ -20,6 +20,7 @@ import { SetPopupContext } from "../App";
 import { useTheme } from "@mui/material/styles";
 import DescriptionIcon from "@mui/icons-material/Description";
 import FaceIcon from "@mui/icons-material/Face";
+// import jwtDecode from "jwt-decode";
 
 const useStyles = makeStyles((theme) => ({
   body: {
@@ -181,6 +182,7 @@ const useStyles = makeStyles((theme) => ({
 const Profile = (props) => {
   const classes = useStyles();
   const theme = useTheme();
+
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const setPopup = useContext(SetPopupContext);
   const [profileDetails, setProfileDetails] = useState({
@@ -201,6 +203,25 @@ const Profile = (props) => {
   const [profileImage, setProfileImage] = useState(null); // Store selected profile image file
   const [resumeFile, setResumeFile] = useState(null); // Store selected resume file
 
+  // const getUserIdFromToken = () => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     return null; // No token found
+  //   }
+
+  //   try {
+  //     const decoded = jwtDecode(token);
+  //     return decoded.userId; // Extract userId from the token payload
+  //   } catch (error) {
+  //     console.error("Error decoding token:", error);
+  //     return null;
+  //   }
+  // };
+
+  // // Usage
+  // const userId = getUserIdFromToken();
+  // console.log("User ID from token:", userId);
+
   const handleInput = (key, value) => {
     setProfileDetails({
       ...profileDetails,
@@ -214,6 +235,16 @@ const Profile = (props) => {
 
   const getData = () => {
     setLoading(true);
+    // const userId = getUserIdFromToken();
+    // if (!userId) {
+    //   setPopup({
+    //     open: true,
+    //     severity: "error",
+    //     message: "User ID not found. Please log in again.",
+    //   });
+    //   setLoading(false);
+    //   return;
+    // }
     axios
       .get(apiList.user, {
         headers: {
@@ -244,7 +275,8 @@ const Profile = (props) => {
   };
 
   const handleUpdate = () => {
-    // Create a FormData object to send both profile details and files
+    const userId = localStorage.getItem("userId");
+    console.log("USER", userId);
     const formData = new FormData();
 
     // Append profile details
@@ -273,6 +305,9 @@ const Profile = (props) => {
       formData.append("resume", resumeFile);
     }
 
+    formData.append("userId", userId);
+
+    console.log(formData);
     // Send the request
     axios
       .put(apiList.user, formData, {
@@ -302,6 +337,7 @@ const Profile = (props) => {
           message: err.response.data.message,
         });
       });
+    // console.log(formData.profileDetails);
   };
 
   if (loading) {
@@ -507,7 +543,7 @@ const Profile = (props) => {
         </Button>
 
         {/* Profile and Resume Upload Fields */}
-        <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
+        {/* <Grid container spacing={2} style={{ marginTop: theme.spacing(4) }}>
           <Grid item xs={12} sm={6}>
             <Typography variant="body1">Profile Picture</Typography>
             <input
@@ -524,7 +560,7 @@ const Profile = (props) => {
               onChange={(e) => setResumeFile(e.target.files[0])}
             />
           </Grid>
-        </Grid>
+        </Grid> */}
 
         {/* Preview Section */}
         <Typography
@@ -576,11 +612,6 @@ const Profile = (props) => {
                     gap: theme.spacing(2),
                   }}
                 >
-                  {/* console.log(
-                  {`${process.env.REACT_APP_SERVER}${
-                    profileDetails.profile
-                  }?${new Date().getTime()}`}
-                  ); */}
                   <Avatar
                     src={`${process.env.REACT_APP_SERVER}${profileDetails.profile}`} // Add a timestamp to force re-render
                     alt="Profile"
