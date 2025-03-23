@@ -266,10 +266,13 @@ const ApplicationTile = (props) => {
       application.jobApplicant.resume !== ""
     ) {
       const address = `${server}${application.jobApplicant.resume}`;
-      console.log(address);
+      // console.log(address);
       axios(address, {
         method: "GET",
         responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // Include the token
+        },
       })
         .then((response) => {
           const file = new Blob([response.data], { type: "application/pdf" });
@@ -491,8 +494,8 @@ const ApplicationTile = (props) => {
             SOP: {application.sop !== "" ? application.sop : "Not Submitted"}
           </Typography>
           <Box mt={1}>
-            {application.jobApplicant.skills.map((skill) => (
-              <Chip label={skill} style={{ marginRight: "2px" }} />
+            {application.jobApplicant.skills.map((skill, index) => (
+              <Chip label={skill} key={index} style={{ marginRight: "2px" }} />
             ))}
           </Box>
         </Grid>
@@ -632,13 +635,13 @@ const JobApplications = (props) => {
     });
     searchParams = [...searchParams, ...asc, ...desc];
     const queryString = searchParams.join("&");
-    console.log(queryString);
+    // console.log(queryString);
     let address = `${apiList.applicants}?jobId=${jobId}`;
     if (queryString !== "") {
       address = `${address}&${queryString}`;
     }
 
-    console.log(address);
+    // console.log(address);
 
     axios
       .get(address, {
@@ -647,7 +650,7 @@ const JobApplications = (props) => {
         },
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         setApplications(response.data);
       })
       .catch((err) => {
@@ -700,7 +703,7 @@ const JobApplications = (props) => {
         >
           {applications.length > 0 ? (
             applications.map((obj) => (
-              <Grid item>
+              <Grid item key={obj._id}>
                 {/* {console.log(obj)} */}
                 <ApplicationTile application={obj} getData={getData} />
               </Grid>

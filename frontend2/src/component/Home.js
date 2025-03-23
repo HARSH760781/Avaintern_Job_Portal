@@ -130,6 +130,7 @@ const JobTile = (props) => {
 
   const [open, setOpen] = useState(false);
   const [sop, setSop] = useState("");
+  const [openSopModal, setOpenSopModal] = useState(false); // To control when the SOP modal opens
 
   const handleClose = () => {
     setOpen(false);
@@ -137,6 +138,14 @@ const JobTile = (props) => {
   };
 
   const handleApply = () => {
+    if (sop.trim() === "") {
+      setPopup({
+        open: true,
+        severity: "error",
+        message: "Please write something in the SOP field.",
+      });
+      return; // Don't proceed if SOP is empty
+    }
     axios
       .post(
         `${apiList.jobs}/${job._id}/applications`,
@@ -236,6 +245,7 @@ const JobTile = (props) => {
             color="primary"
             className={classes.button}
             onClick={() => {
+              setOpenSopModal(true); // Open the SOP modal
               window.open(job.careerPageLink, "_blank");
               setOpen(true);
             }}
@@ -276,7 +286,7 @@ const JobTile = (props) => {
           }}
         >
           <TextField
-            label="How do you fit for this role (up to 250 words)"
+            label="Purpose Statement"
             multiline
             rows={8}
             style={{ width: "100%", marginBottom: "30px" }}
@@ -290,12 +300,17 @@ const JobTile = (props) => {
                 setSop(event.target.value);
               }
             }}
+            placeholder="How do you fit for this role (upto 250 words )"
+            InputLabelProps={{
+              shrink: true, // Ensures the label wraps and doesn't overflow
+            }}
           />
           <Button
             variant="contained"
             color="primary"
             style={{ padding: "10px 50px" }}
             onClick={handleApply}
+            disabled={sop.trim() === ""} // Disable submit if SOP is empty
           >
             Submit
           </Button>

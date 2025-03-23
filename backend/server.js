@@ -39,9 +39,6 @@ const port = process.env.PORT || 8080;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
-app.use("/resume", express.static(path.join(__dirname, "public/resume")));
-app.use("/profile", express.static(path.join(__dirname, "public/profile")));
-app.use(express.static(path.join(__dirname, "public")));
 
 // Setting up middlewares
 app.use(
@@ -52,13 +49,23 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"], // Allow specific headers
   })
 );
+
+app.use(
+  "/resume",
+  (req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    next();
+  },
+  express.static(path.join(__dirname, "public/resume"))
+);
+app.use("/profile", express.static(path.join(__dirname, "public/profile")));
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use(express.json());
 app.use(passportConfig.initialize());
 app.use(passport.initialize());
 
 app.use(express.static(path.join(__dirname, "build")));
-
-
 
 // Routing
 
