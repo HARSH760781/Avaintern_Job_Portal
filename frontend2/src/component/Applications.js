@@ -47,19 +47,41 @@ const useStyles = makeStyles((theme) => ({
   },
   jobTileOuter: {
     padding: theme.spacing(3),
-    margin: "auto",
+    margin: "3% auto",
     boxSizing: "border-box",
-    width: "60vw ",
-    borderRadius: "12px",
-    backgroundColor: "#ffffff", // White background for cards
-    transition: "transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out",
+    width: "100%", // Ensures the card takes the full available width
+    maxWidth: "600px", // Limit width to 600px or less
+    borderRadius: "12px", // Rounded corners for smooth edges
+    backgroundColor: "#ffffff", // Clean white background
+    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)", // Soft shadow for a subtle 3D effect
+    transition: "transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease",
+    border: "1px solid #e0e0e0", // Light border for separation
     "&:hover": {
-      transform: "translateY(-4px)",
-      boxShadow: theme.shadows[8],
+      transform: "translateY(-6px)", // Slight upward hover movement
+      boxShadow: theme.shadows[10], // Stronger shadow effect on hover
+      border: "1px solid #3f51b5", // Border color change on hover
     },
     [theme.breakpoints.down("sm")]: {
-      width: "100%",
+      width: "95%", // Adjust width to 90% on smaller screens
+      maxWidth: "none", // Remove max-width on mobile to take full container width
       padding: theme.spacing(2), // Adjust padding for mobile
+      // margin: "auto !important",
+    },
+  },
+  aplicationTileCard: {
+    padding: theme.spacing(3),
+    background: "#f4f4f4", // Lighter background for tiles
+    display: "flex",
+    flexDirection: "column",
+    borderRadius: "8px", // Smooth borders
+    boxShadow: theme.shadows[2], // Subtle shadow for tiles
+    transition: "box-shadow 0.3s ease",
+    "&:hover": {
+      boxShadow: theme.shadows[10], // More pronounced shadow on hover
+    },
+    [theme.breakpoints.down("sm")]: {
+      padding: "0",
+      margin: "auto !important",
     },
   },
   popupDialog: {
@@ -73,13 +95,13 @@ const useStyles = makeStyles((theme) => ({
     margin: "5%",
     width: "100%",
     [theme.breakpoints.down("sm")]: {
-      padding: theme.spacing(2), // Adjust padding for mobile
+      padding: "5px", // Adjust padding for mobile
     },
   },
   title: {
     fontWeight: "bold",
     height: "100%",
-    margin: "5%",
+    margin: "5% 0",
     color: theme.palette.primary.main,
     textAlign: "center",
     fontSize: "2.5rem", // Default font size for desktop
@@ -345,16 +367,27 @@ const Applications = (props) => {
           Applications
         </Typography>
       </Grid>
-      <Grid item container spacing={3} style={{ margin: "auto" }}>
+      <Grid
+        item
+        container
+        spacing={3}
+        className={classes.aplicationTileCard}
+        direction="row"
+      >
         {applications.length > 0 ? (
           applications.map((obj, index) => (
             <Grid
               item
-              xs={12}
-              sm={6}
-              md={4}
+              xs={12} // Take full width
               key={index}
-              style={{ width: "100%", padding: "0" }}
+              style={{
+                padding: "0",
+                display: "flex",
+                justifyContent: "center", // Center the card in the row
+                width: "100%", // Ensure the card uses full available width
+                maxWidth: "600px", // Limit the card width to 600px
+                margin: "auto", // Center the card in the parent container
+              }}
             >
               <ApplicationTile application={obj} />
             </Grid>
