@@ -471,7 +471,7 @@ const Signup = (props) => {
             }}
           >
             <MenuItem value="applicant">Applicant</MenuItem>
-            <MenuItem value="recruiter">Recruiter</MenuItem>
+            {/* <MenuItem value="recruiter">Recruiter</MenuItem> */}
           </TextField>
         </Grid>
         <Grid item>
