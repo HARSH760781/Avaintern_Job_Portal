@@ -750,10 +750,9 @@ const Home = (props) => {
             <Box display="flex" justifyContent="center" mt={4}>
               <CircularProgress />
             </Box>
-          ) : jobs.length > 0 ? (
-             console.log(jobs.length()); 
+          ) : jobs.length > 0 ? ( 
             jobs.map((job) => <JobTile key={job._id} job={job} />)
-            console.log(job);
+
 
           ) : (
             <Typography variant="h5" className={classes.noJobsMessage}>
