@@ -17,11 +17,9 @@ mongoose
   .connect(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
-  .then((res) => console.log("Connected to DB"))
-  .catch((err) => console.log(err));
+  .then(() => console.log("✅ Connected to MongoDB"))
+  .catch((err) => console.error("❌ MongoDB connection error:", err));
 
 // initialising directories
 if (!fs.existsSync("./public")) {
