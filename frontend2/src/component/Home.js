@@ -751,7 +751,10 @@ const Home = (props) => {
               <CircularProgress />
             </Box>
           ) : jobs.length > 0 ? (
+             console.log(jobs.length()); 
             jobs.map((job) => <JobTile key={job._id} job={job} />)
+            console.log(job);
+
           ) : (
             <Typography variant="h5" className={classes.noJobsMessage}>
               No jobs found
