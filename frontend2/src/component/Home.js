@@ -750,8 +750,10 @@ const Home = (props) => {
             <Box display="flex" justifyContent="center" mt={4}>
               <CircularProgress />
             </Box>
-          ) : jobs.length > 0 ? (
+          ) : jobs.length > 0 ? ( 
             jobs.map((job) => <JobTile key={job._id} job={job} />)
+
+
           ) : (
             <Typography variant="h5" className={classes.noJobsMessage}>
               No jobs found
